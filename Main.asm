@@ -15,10 +15,31 @@ PROGRAM_START
 
         jsr COPY_SPRITE
         jsr LOAD_SPRITE
+        jsr SETUP_INTERRUPT
         
 
 PROGRAM_END
         rts
+
+COUNTER
+        BYTE 0
+
+SETUP_INTERRUPT
+        sei
+        lda #<ANIMATION_ROUTINE
+        sta $0314
+        lda #>ANIMATION_ROUTINE
+        sta $0315
+        cli
+        rts
+
+ANIMATION_ROUTINE
+        inc COUNTER
+
+        lda COUNTER
+        sta $0400
+
+        jmp $EA31
         
 COPY_SPRITE
         jsr COPY_FRONT

@@ -17,24 +17,38 @@ PROGRAM_START
 
         jsr COPY_SPRITE
         jsr LOAD_SPRITE
+        jsr SETUP_INTERRUPT
         
 
 PROGRAM_END
         rts
+
+COUNTER
+        BYTE 0
+
+SETUP_INTERRUPT
+        sei
+        lda #<ANIMATION_ROUTINE
+        sta $0314
+        lda #>ANIMATION_ROUTINE
+        sta $0315
+        cli
+        rts
+
+ANIMATION_ROUTINE
+        inc COUNTER
+
+        lda COUNTER
+        sta $0400
+
+        jmp $EA31
         
-; ===========================
-; COPY ALL SPRITE FRAMES
-; ===========================
 COPY_SPRITE
         jsr COPY_FRONT
         jsr COPY_LEFT
         jsr COPY_RIGHT
         rts
 
-
-; ===========================
-; COPY FRONT FRAME → $2000
-; ===========================
 COPY_FRONT
         ldx #0
 CF_LOOP
@@ -45,10 +59,6 @@ CF_LOOP
         bne CF_LOOP
         rts
 
-
-; ===========================
-; COPY LEFT FRAME → $2040
-; ===========================
 COPY_LEFT
         ldx #0
 CL_LOOP
@@ -59,10 +69,6 @@ CL_LOOP
         bne CL_LOOP
         rts
 
-
-; ===========================
-; COPY RIGHT FRAME → $2080
-; ===========================
 COPY_RIGHT
         ldx #0
 CR_LOOP
@@ -73,10 +79,6 @@ CR_LOOP
         bne CR_LOOP
         rts
 
-
-; ===========================
-; LOAD SPRITE SETTINGS
-; ===========================
 LOAD_SPRITE
 
         lda #$80
