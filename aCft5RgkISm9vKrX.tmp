@@ -15,27 +15,70 @@
 *=$0900
 PROGRAM_START
 
-        bne COPY_SPRITE
+        jsr COPY_SPRITE
+        jsr LOAD_SPRITE
         
 
 PROGRAM_END
         rts
         
+; ===========================
+; COPY ALL SPRITE FRAMES
+; ===========================
 COPY_SPRITE
-        bne COPY_FRONT
-        bne LOAD_SPRITE
+        jsr COPY_FRONT
+        jsr COPY_LEFT
+        jsr COPY_RIGHT
         rts
 
+
+; ===========================
+; COPY FRONT FRAME → $2000
+; ===========================
 COPY_FRONT
         ldx #0
+CF_LOOP
         lda EYE_FRONT_DATA,x
         sta $2000,x
         inx
         cpx #64
-        bne COPY_FRONT
+        bne CF_LOOP
         rts
 
+
+; ===========================
+; COPY LEFT FRAME → $2040
+; ===========================
+COPY_LEFT
+        ldx #0
+CL_LOOP
+        lda EYE_LEFT_DATA,x
+        sta $2040,x
+        inx
+        cpx #64
+        bne CL_LOOP
+        rts
+
+
+; ===========================
+; COPY RIGHT FRAME → $2080
+; ===========================
+COPY_RIGHT
+        ldx #0
+CR_LOOP
+        lda EYE_RIGHT_DATA,x
+        sta $2080,x
+        inx
+        cpx #64
+        bne CR_LOOP
+        rts
+
+
+; ===========================
+; LOAD SPRITE SETTINGS
+; ===========================
 LOAD_SPRITE
+
         lda #$80
         sta $07F8
 
@@ -50,10 +93,11 @@ LOAD_SPRITE
 
         lda #100
         sta $D001
-
         lda #1
         sta $D027
+
         rts
+
 
 
 

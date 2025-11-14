@@ -15,8 +15,8 @@
     <DiskDirectoryName />
     <StartPrg>zzzzzzzzzzzz.zzzzzzzzz</StartPrg>
     <Comments />
-    <Author />
-    <Email />
+    <Author>Jacob Baker</Author>
+    <Email>jb00645@my.westga.edu</Email>
     <AutoLaunchName>Project04.prg</AutoLaunchName>
     <NoSingleFileBuild>False</NoSingleFileBuild>
     <CreatedWithVersion>CBM prg Studio 4.6.0</CreatedWithVersion>
