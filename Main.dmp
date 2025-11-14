@@ -13,199 +13,251 @@
 00013  0810             *=$0900
 00014  0900             PROGRAM_START 
 00015  0900             
-00016  0900  20 24 09              JSR COPY_SPRITE
-00017  0903  20 58 09              JSR LOAD_SPRITE
-00018  0906  20 0B 09              JSR SETUP_INTERRUPT
+00016  0900  20 67 09              JSR COPY_SPRITE
+00017  0903  20 9B 09              JSR LOAD_SPRITE
+00018  0906  20 0C 09              JSR SETUP_INTERRUPT
 00019  0909                        
 00020  0909             
 00021  0909             PROGRAM_END 
 00022  0909  60                    RTS
 00023  090A             
-00024  090A             COUNTER
+00024  090A             FRAME_STEP 
 00025  090A  00                    BYTE 0
 00026  090B             
-00027  090B             SETUP_INTERRUPT 
-00028  090B  78                    SEI
-00029  090C  A9 18                 LDA #<ANIMATION_ROUTINE
-00030  090E  8D 14 03              STA $0314
-00031  0911  A9 09                 LDA #>ANIMATION_ROUTINE
-00032  0913  8D 15 03              STA $0315
-00033  0916  58                    CLI
-00034  0917  60                    RTS
-00035  0918             
-00036  0918             ANIMATION_ROUTINE 
-00037  0918  EE 0A 09              INC COUNTER
-00038  091B             
-00039  091B  AD 0A 09              LDA COUNTER
-00040  091E  8D 00 04              STA $0400
-00041  0921             
-00042  0921  4C 31 EA              JMP $EA31
-00043  0924                        
-00044  0924             COPY_SPRITE 
-00045  0924  20 2E 09              JSR COPY_FRONT
-00046  0927  20 3C 09              JSR COPY_LEFT
-00047  092A  20 4A 09              JSR COPY_RIGHT
-00048  092D  60                    RTS
-00049  092E             
-00050  092E             COPY_FRONT 
-00051  092E  A2 00                 LDX #0
-00052  0930             CF_LOOP
-00053  0930  BD 7A 09              LDA EYE_FRONT_DATA,X
-00054  0933  9D 00 20              STA $2000,X
-00055  0936  E8                    INX
-00056  0937  E0 40                 CPX #64
-00057  0939  D0 F5                 BNE CF_LOOP
-00058  093B  60                    RTS
-00059  093C             
-00060  093C             COPY_LEFT
-00061  093C  A2 00                 LDX #0
-00062  093E             CL_LOOP
-00063  093E  BD BA 09              LDA EYE_LEFT_DATA,X
-00064  0941  9D 40 20              STA $2040,X
-00065  0944  E8                    INX
-00066  0945  E0 40                 CPX #64
-00067  0947  D0 F5                 BNE CL_LOOP
-00068  0949  60                    RTS
-00069  094A             
-00070  094A             COPY_RIGHT 
-00071  094A  A2 00                 LDX #0
-00072  094C             CR_LOOP
-00073  094C  BD FA 09              LDA EYE_RIGHT_DATA,X
-00074  094F  9D 80 20              STA $2080,X
-00075  0952  E8                    INX
-00076  0953  E0 40                 CPX #64
-00077  0955  D0 F5                 BNE CR_LOOP
-00078  0957  60                    RTS
-00079  0958             
-00080  0958             LOAD_SPRITE 
-00081  0958             
-00082  0958  A9 80                 LDA #$80
-00083  095A  8D F8 07              STA $07F8
-00084  095D             
-00085  095D  A9 01                 LDA #%00000001
-00086  095F  8D 15 D0              STA $D015
-00087  0962             
-00088  0962  A9 2C                 LDA #44
-00089  0964  8D 00 D0              STA $D000
-00090  0967  AD 10 D0              LDA $D010
-00091  096A  09 01                 ORA #%00000001
-00092  096C  8D 10 D0              STA $D010
-00093  096F             
-00094  096F  A9 64                 LDA #100
-00095  0971  8D 01 D0              STA $D001
-00096  0974  A9 01                 LDA #1
-00097  0976  8D 27 D0              STA $D027
-00098  0979             
-00099  0979  60                    RTS
-00100  097A             
-00101  097A             
-00102  097A             
-00103  097A             
-00104  097A             
-00105  097A             
-00106  097A             
-00107  097A             
-00108  097A             
-00109  097A             
-00110  097A             
-00111  097A             
-00112  097A             
-00113  097A             
-00114  097A             
-00115  097A             EYE_FRONT_DATA 
-00116  097A             ; EYE_FRONT
-00117  097A  00 7E 00              BYTE $00,$7E,$00
-00118  097D  03 81 C0              BYTE $03,$81,$C0
-00119  0980  0C 7E 30              BYTE $0C,$7E,$30
-00120  0983  13 FF C8              BYTE $13,$FF,$C8
-00121  0986  2F FF F4              BYTE $2F,$FF,$F4
-00122  0989  2F FF F4              BYTE $2F,$FF,$F4
-00123  098C  5F FF FA              BYTE $5F,$FF,$FA
-00124  098F  5F C3 FA              BYTE $5F,$C3,$FA
-00125  0992  5F 81 FA              BYTE $5F,$81,$FA
-00126  0995  BF 00 FD              BYTE $BF,$00,$FD
-00127  0998  BF 00 FD              BYTE $BF,$00,$FD
-00128  099B  BF 00 FD              BYTE $BF,$00,$FD
-00129  099E  5F 81 FA              BYTE $5F,$81,$FA
-00130  09A1  5F C3 FA              BYTE $5F,$C3,$FA
-00131  09A4  5F FF FA              BYTE $5F,$FF,$FA
-00132  09A7  2F FF F4              BYTE $2F,$FF,$F4
-00133  09AA  2F FF F4              BYTE $2F,$FF,$F4
-00134  09AD  13 FF C8              BYTE $13,$FF,$C8
-00135  09B0  0C 7E 30              BYTE $0C,$7E,$30
-00136  09B3  03 81 C0              BYTE $03,$81,$C0
-00137  09B6  00 7E 00              BYTE $00,$7E,$00
-00138  09B9  00                    BYTE $00
-00139  09BA             
-00140  09BA             EYE_LEFT_DATA 
-00141  09BA             ; EYE_LEFT
-00142  09BA  00 7E 00              BYTE $00,$7E,$00
-00143  09BD  03 81 C0              BYTE $03,$81,$C0
-00144  09C0  0C 7E 30              BYTE $0C,$7E,$30
-00145  09C3  13 FF C8              BYTE $13,$FF,$C8
-00146  09C6  2F FF F4              BYTE $2F,$FF,$F4
-00147  09C9  2F FF F4              BYTE $2F,$FF,$F4
-00148  09CC  5F FF FA              BYTE $5F,$FF,$FA
-00149  09CF  5C 7F FA              BYTE $5C,$7F,$FA
-00150  09D2  58 3F FA              BYTE $58,$3F,$FA
-00151  09D5  B8 3F FD              BYTE $B8,$3F,$FD
-00152  09D8  B8 3F FD              BYTE $B8,$3F,$FD
-00153  09DB  B8 3F FD              BYTE $B8,$3F,$FD
-00154  09DE  58 3F FA              BYTE $58,$3F,$FA
-00155  09E1  5C 7F FA              BYTE $5C,$7F,$FA
-00156  09E4  5F FF FA              BYTE $5F,$FF,$FA
-00157  09E7  2F FF F4              BYTE $2F,$FF,$F4
-00158  09EA  2F FF F4              BYTE $2F,$FF,$F4
-00159  09ED  13 FF C8              BYTE $13,$FF,$C8
-00160  09F0  0C 7E 30              BYTE $0C,$7E,$30
-00161  09F3  03 81 C0              BYTE $03,$81,$C0
-00162  09F6  00 7E 00              BYTE $00,$7E,$00
-00163  09F9  00                    BYTE $00
-00164  09FA             
-00165  09FA             EYE_RIGHT_DATA 
-00166  09FA             ; EYE RIGHT
-00167  09FA  00 7E 00              BYTE $00,$7E,$00
-00168  09FD  03 81 C0              BYTE $03,$81,$C0
-00169  0A00  0C 7E 30              BYTE $0C,$7E,$30
-00170  0A03  13 FF C8              BYTE $13,$FF,$C8
-00171  0A06  2F FF F4              BYTE $2F,$FF,$F4
-00172  0A09  2F FF F4              BYTE $2F,$FF,$F4
-00173  0A0C  5F FF FA              BYTE $5F,$FF,$FA
-00174  0A0F  5F FE 3A              BYTE $5F,$FE,$3A
-00175  0A12  5F FC 1A              BYTE $5F,$FC,$1A
-00176  0A15  BF FC 1D              BYTE $BF,$FC,$1D
-00177  0A18  BF FC 1D              BYTE $BF,$FC,$1D
-00178  0A1B  BF FC 1D              BYTE $BF,$FC,$1D
-00179  0A1E  5F FC 1A              BYTE $5F,$FC,$1A
-00180  0A21  5F FE 3A              BYTE $5F,$FE,$3A
-00181  0A24  5F FF FA              BYTE $5F,$FF,$FA
-00182  0A27  2F FF F4              BYTE $2F,$FF,$F4
-00183  0A2A  2F FF F4              BYTE $2F,$FF,$F4
-00184  0A2D  13 FF C8              BYTE $13,$FF,$C8
-00185  0A30  0C 7E 30              BYTE $0C,$7E,$30
-00186  0A33  03 81 C0              BYTE $03,$81,$C0
-00187  0A36  00 7E 00              BYTE $00,$7E,$00
-00188  0A39  00                    BYTE $00
-00189  0A3A             
-00190  0A3A             
+00027  090B             COUNTER
+00028  090B  00                    BYTE 0
+00029  090C             
+00030  090C             SETUP_INTERRUPT 
+00031  090C  78                    SEI
+00032  090D  A9 19                 LDA #<ANIMATION_ROUTINE
+00033  090F  8D 14 03              STA $0314
+00034  0912  A9 09                 LDA #>ANIMATION_ROUTINE
+00035  0914  8D 15 03              STA $0315
+00036  0917  58                    CLI
+00037  0918  60                    RTS
+00038  0919             
+00039  0919             ANIMATION_ROUTINE 
+00040  0919  20 22 09              JSR UPDATE_COUNTER
+00041  091C  20 3D 09              JSR UPDATE_FRAME
+00042  091F             
+00043  091F  4C 31 EA              JMP $EA31
+00044  0922                        
+00045  0922             
+00046  0922             UPDATE_COUNTER 
+00047  0922  EE 0B 09              INC COUNTER
+00048  0925             
+00049  0925  AD 0B 09              LDA COUNTER
+00050  0928  C9 3C                 CMP #60
+00051  092A  D0 10                 BNE COUNTER_DONE
+00052  092C             
+00053  092C  A9 00                 LDA #0
+00054  092E  8D 0B 09              STA COUNTER
+00055  0931             
+00056  0931  EE 0A 09              INC FRAME_STEP
+00057  0934  AD 0A 09              LDA FRAME_STEP
+00058  0937  29 03                 AND #3
+00059  0939  8D 0A 09              STA FRAME_STEP
+00060  093C             
+00061  093C             COUNTER_DONE 
+00062  093C  60                    RTS
+00063  093D             
+00064  093D             UPDATE_FRAME 
+00065  093D  AD 0A 09              LDA FRAME_STEP
+00066  0940  C9 00                 CMP #0
+00067  0942  F0 1B                 BEQ FRONT_FRAME
+00068  0944  C9 01                 CMP #1
+00069  0946  F0 0F                 BEQ RIGHT_FRAME
+00070  0948  C9 02                 CMP #2
+00071  094A  F0 13                 BEQ FRONT_FRAME
+00072  094C  4C 4F 09              JMP LEFT_FRAME
+00073  094F             
+00074  094F             LEFT_FRAME 
+00075  094F  A9 81                 LDA #$81
+00076  0951  8D F8 07              STA $07F8
+00077  0954  4C 3C 09              JMP COUNTER_DONE
+00078  0957             
+00079  0957             RIGHT_FRAME 
+00080  0957  A9 82                 LDA #$82
+00081  0959  8D F8 07              STA $07F8
+00082  095C  4C 3C 09              JMP COUNTER_DONE
+00083  095F             
+00084  095F             FRONT_FRAME 
+00085  095F  A9 80                 LDA #$80
+00086  0961  8D F8 07              STA $07F8
+00087  0964  4C 3C 09              JMP COUNTER_DONE
+00088  0967             
+00089  0967             COPY_SPRITE 
+00090  0967  20 71 09              JSR COPY_FRONT
+00091  096A  20 7F 09              JSR COPY_LEFT
+00092  096D  20 8D 09              JSR COPY_RIGHT
+00093  0970  60                    RTS
+00094  0971             
+00095  0971             COPY_FRONT 
+00096  0971  A2 00                 LDX #0
+00097  0973             CF_LOOP
+00098  0973  BD BD 09              LDA EYE_FRONT_DATA,X
+00099  0976  9D 00 20              STA $2000,X
+00100  0979  E8                    INX
+00101  097A  E0 40                 CPX #64
+00102  097C  D0 F5                 BNE CF_LOOP
+00103  097E  60                    RTS
+00104  097F             
+00105  097F             COPY_LEFT
+00106  097F  A2 00                 LDX #0
+00107  0981             CL_LOOP
+00108  0981  BD FD 09              LDA EYE_LEFT_DATA,X
+00109  0984  9D 40 20              STA $2040,X
+00110  0987  E8                    INX
+00111  0988  E0 40                 CPX #64
+00112  098A  D0 F5                 BNE CL_LOOP
+00113  098C  60                    RTS
+00114  098D             
+00115  098D             COPY_RIGHT 
+00116  098D  A2 00                 LDX #0
+00117  098F             CR_LOOP
+00118  098F  BD 3D 0A              LDA EYE_RIGHT_DATA,X
+00119  0992  9D 80 20              STA $2080,X
+00120  0995  E8                    INX
+00121  0996  E0 40                 CPX #64
+00122  0998  D0 F5                 BNE CR_LOOP
+00123  099A  60                    RTS
+00124  099B             
+00125  099B             LOAD_SPRITE 
+00126  099B             
+00127  099B  A9 80                 LDA #$80
+00128  099D  8D F8 07              STA $07F8
+00129  09A0             
+00130  09A0  A9 01                 LDA #%00000001
+00131  09A2  8D 15 D0              STA $D015
+00132  09A5             
+00133  09A5  A9 2C                 LDA #44
+00134  09A7  8D 00 D0              STA $D000
+00135  09AA  AD 10 D0              LDA $D010
+00136  09AD  09 01                 ORA #%00000001
+00137  09AF  8D 10 D0              STA $D010
+00138  09B2             
+00139  09B2  A9 64                 LDA #100
+00140  09B4  8D 01 D0              STA $D001
+00141  09B7  A9 01                 LDA #1
+00142  09B9  8D 27 D0              STA $D027
+00143  09BC             
+00144  09BC  60                    RTS
+00145  09BD             
+00146  09BD             
+00147  09BD             
+00148  09BD             
+00149  09BD             
+00150  09BD             
+00151  09BD             
+00152  09BD             
+00153  09BD             
+00154  09BD             
+00155  09BD             
+00156  09BD             
+00157  09BD             
+00158  09BD             
+00159  09BD             
+00160  09BD             EYE_FRONT_DATA 
+00161  09BD             ; EYE_FRONT
+00162  09BD  00 7E 00              BYTE $00,$7E,$00
+00163  09C0  03 81 C0              BYTE $03,$81,$C0
+00164  09C3  0C 7E 30              BYTE $0C,$7E,$30
+00165  09C6  13 FF C8              BYTE $13,$FF,$C8
+00166  09C9  2F FF F4              BYTE $2F,$FF,$F4
+00167  09CC  2F FF F4              BYTE $2F,$FF,$F4
+00168  09CF  5F FF FA              BYTE $5F,$FF,$FA
+00169  09D2  5F C3 FA              BYTE $5F,$C3,$FA
+00170  09D5  5F 81 FA              BYTE $5F,$81,$FA
+00171  09D8  BF 00 FD              BYTE $BF,$00,$FD
+00172  09DB  BF 00 FD              BYTE $BF,$00,$FD
+00173  09DE  BF 00 FD              BYTE $BF,$00,$FD
+00174  09E1  5F 81 FA              BYTE $5F,$81,$FA
+00175  09E4  5F C3 FA              BYTE $5F,$C3,$FA
+00176  09E7  5F FF FA              BYTE $5F,$FF,$FA
+00177  09EA  2F FF F4              BYTE $2F,$FF,$F4
+00178  09ED  2F FF F4              BYTE $2F,$FF,$F4
+00179  09F0  13 FF C8              BYTE $13,$FF,$C8
+00180  09F3  0C 7E 30              BYTE $0C,$7E,$30
+00181  09F6  03 81 C0              BYTE $03,$81,$C0
+00182  09F9  00 7E 00              BYTE $00,$7E,$00
+00183  09FC  00                    BYTE $00
+00184  09FD             
+00185  09FD             EYE_LEFT_DATA 
+00186  09FD             ; EYE_LEFT
+00187  09FD  00 7E 00              BYTE $00,$7E,$00
+00188  0A00  03 81 C0              BYTE $03,$81,$C0
+00189  0A03  0C 7E 30              BYTE $0C,$7E,$30
+00190  0A06  13 FF C8              BYTE $13,$FF,$C8
+00191  0A09  2F FF F4              BYTE $2F,$FF,$F4
+00192  0A0C  2F FF F4              BYTE $2F,$FF,$F4
+00193  0A0F  5F FF FA              BYTE $5F,$FF,$FA
+00194  0A12  5C 7F FA              BYTE $5C,$7F,$FA
+00195  0A15  58 3F FA              BYTE $58,$3F,$FA
+00196  0A18  B8 3F FD              BYTE $B8,$3F,$FD
+00197  0A1B  B8 3F FD              BYTE $B8,$3F,$FD
+00198  0A1E  B8 3F FD              BYTE $B8,$3F,$FD
+00199  0A21  58 3F FA              BYTE $58,$3F,$FA
+00200  0A24  5C 7F FA              BYTE $5C,$7F,$FA
+00201  0A27  5F FF FA              BYTE $5F,$FF,$FA
+00202  0A2A  2F FF F4              BYTE $2F,$FF,$F4
+00203  0A2D  2F FF F4              BYTE $2F,$FF,$F4
+00204  0A30  13 FF C8              BYTE $13,$FF,$C8
+00205  0A33  0C 7E 30              BYTE $0C,$7E,$30
+00206  0A36  03 81 C0              BYTE $03,$81,$C0
+00207  0A39  00 7E 00              BYTE $00,$7E,$00
+00208  0A3C  00                    BYTE $00
+00209  0A3D             
+00210  0A3D             EYE_RIGHT_DATA 
+00211  0A3D             ; EYE RIGHT
+00212  0A3D  00 7E 00              BYTE $00,$7E,$00
+00213  0A40  03 81 C0              BYTE $03,$81,$C0
+00214  0A43  0C 7E 30              BYTE $0C,$7E,$30
+00215  0A46  13 FF C8              BYTE $13,$FF,$C8
+00216  0A49  2F FF F4              BYTE $2F,$FF,$F4
+00217  0A4C  2F FF F4              BYTE $2F,$FF,$F4
+00218  0A4F  5F FF FA              BYTE $5F,$FF,$FA
+00219  0A52  5F FE 3A              BYTE $5F,$FE,$3A
+00220  0A55  5F FC 1A              BYTE $5F,$FC,$1A
+00221  0A58  BF FC 1D              BYTE $BF,$FC,$1D
+00222  0A5B  BF FC 1D              BYTE $BF,$FC,$1D
+00223  0A5E  BF FC 1D              BYTE $BF,$FC,$1D
+00224  0A61  5F FC 1A              BYTE $5F,$FC,$1A
+00225  0A64  5F FE 3A              BYTE $5F,$FE,$3A
+00226  0A67  5F FF FA              BYTE $5F,$FF,$FA
+00227  0A6A  2F FF F4              BYTE $2F,$FF,$F4
+00228  0A6D  2F FF F4              BYTE $2F,$FF,$F4
+00229  0A70  13 FF C8              BYTE $13,$FF,$C8
+00230  0A73  0C 7E 30              BYTE $0C,$7E,$30
+00231  0A76  03 81 C0              BYTE $03,$81,$C0
+00232  0A79  00 7E 00              BYTE $00,$7E,$00
+00233  0A7C  00                    BYTE $00
+00234  0A7D             
+00235  0A7D             
 
-******* 16 Label(s) *******
-ANIMATION_ROUTINE = $0918 
-CF_LOOP = $0930 
-CL_LOOP = $093E 
-COPY_FRONT = $092E 
-COPY_LEFT = $093C 
-COPY_RIGHT = $094A 
-COPY_SPRITE = $0924 
-COUNTER = $090A 
-CR_LOOP = $094C 
-EYE_FRONT_DATA = $097A 
-EYE_LEFT_DATA = $09BA 
-EYE_RIGHT_DATA = $09FA 
-LOAD_SPRITE = $0958 
+******* 23 Label(s) *******
+ANIMATION_ROUTINE = $0919 
+CF_LOOP = $0973 
+CL_LOOP = $0981 
+COPY_FRONT = $0971 
+COPY_LEFT = $097F 
+COPY_RIGHT = $098D 
+COPY_SPRITE = $0967 
+COUNTER = $090B 
+COUNTER_DONE = $093C 
+CR_LOOP = $098F 
+EYE_FRONT_DATA = $09BD 
+EYE_LEFT_DATA = $09FD 
+EYE_RIGHT_DATA = $0A3D 
+FRAME_STEP = $090A 
+FRONT_FRAME = $095F 
+LEFT_FRAME = $094F 
+LOAD_SPRITE = $099B 
 PROGRAM_END = $0909 
 PROGRAM_START = $0900 
-SETUP_INTERRUPT = $090B 
+RIGHT_FRAME = $0957 
+SETUP_INTERRUPT = $090C 
+UPDATE_COUNTER = $0922 
+UPDATE_FRAME = $093D 
 
 ******* 2 Unused label(s) *******
 PROGRAM_END

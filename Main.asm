@@ -21,6 +21,9 @@ PROGRAM_START
 PROGRAM_END
         rts
 
+FRAME_STEP
+        BYTE 0
+
 COUNTER
         BYTE 0
 
@@ -34,13 +37,55 @@ SETUP_INTERRUPT
         rts
 
 ANIMATION_ROUTINE
-        inc COUNTER
-
-        lda COUNTER
-        sta $0400
+        jsr UPDATE_COUNTER
+        jsr UPDATE_FRAME
 
         jmp $EA31
         
+
+UPDATE_COUNTER
+        inc COUNTER
+
+        lda COUNTER
+        cmp #60
+        bne COUNTER_DONE
+
+        lda #0
+        sta COUNTER
+
+        inc FRAME_STEP
+        lda FRAME_STEP
+        and #3
+        sta FRAME_STEP
+
+COUNTER_DONE
+        rts
+
+UPDATE_FRAME
+        lda FRAME_STEP
+        cmp #0
+        beq FRONT_FRAME
+        cmp #1
+        beq RIGHT_FRAME
+        cmp #2
+        beq FRONT_FRAME
+        jmp LEFT_FRAME
+
+LEFT_FRAME
+        lda #$81
+        sta $07F8
+        jmp COUNTER_DONE
+
+RIGHT_FRAME
+        lda #$82
+        sta $07F8
+        jmp COUNTER_DONE
+
+FRONT_FRAME
+        lda #$80
+        sta $07F8
+        jmp COUNTER_DONE
+
 COPY_SPRITE
         jsr COPY_FRONT
         jsr COPY_LEFT
