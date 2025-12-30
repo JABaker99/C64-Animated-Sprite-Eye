@@ -16,7 +16,6 @@ PROGRAM_START
         jsr COPY_SPRITE
         jsr LOAD_SPRITE
         jsr SETUP_INTERRUPT
-        
 
 PROGRAM_END
         rts
